@@ -1,0 +1,9 @@
+venv 
+.idea 
+.vscode 
+node_modules 
+data 
+__pycache__ 
+dist 
+target 
+build 
