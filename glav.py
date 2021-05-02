@@ -4,11 +4,14 @@ import numpy as np
 sys.path.append(os.getcwd())
 
 
+# -1 means block
+# 5 means agent
+# 0 means empty space
+
+
 class Agent():
     def __init__(self, x=0, y=0):
         self.x = x
-        self.y = y
-        
         self.y = y
 
     def move(self, direction, maze):
@@ -31,11 +34,11 @@ class Agent():
         if direction == 'up':
             if self.x <=0:
                 pass
-            elif maze[self.x+1, self.y] == -1:
+            elif maze[self.x-1, self.y] == -1:
                 pass
             else:
                 self.x -= 1
-                
+
         if direction == 'left':
             if self.y <=0:
                 pass
@@ -46,19 +49,23 @@ class Agent():
 
 
 class Maze():
-    def __init__(self, height=4, width=4):
-        super().__init__()
+
+
+    def __init__(self, height=4, width=4, agent_random=True):
         self.height = height
         self.width = width
-        #self.view = np.zeros((height, width))
+        self.agent_h = np.random.randint(height-1, size=1)[0] if agent_random else height-1
+        self.agent_w = np.random.randint(width-1, size=1)[0] if agent_random else width-1
+        self.agent = Agent(self.agent_h, self.agent_w)
         self.view = self.set_blocks()
-        self.agent = Agent(0,0)
+
+
+
 
     def set_blocks(self, p=10):
-        #for i in range(self.height*self.width/2):
         kolich = self.height*self.width
         lab = np.random.choice([0,-1], size=(kolich,), p=[(100-p)/100, p/100]).reshape(self.height, self.width)
-        lab[0,0] = 0
+        lab[self.agent_h,self.agent_w] = 0
         return lab
 
     def visualize(self):
@@ -68,17 +75,17 @@ class Maze():
 
     def move_random(self):
         direction = np.random.choice(['up', 'down', 'right', 'left'], 1)[0]
-        #direction = 'down'
         print(direction)
-        #m = self.view.copy()
         self.agent.move(direction, self.view)
-        self.visualize()
-
 
 
 if __name__ == '__main__':
     m = Maze(7,7)
     m.view = m.set_blocks(30)
-    razi = 10 
+    razi = 9
     for i in range(razi):
         m.move_random()
+        m.visualize()
+    #print(dir(m.view))
+    #print(m.__sizeof__())
+
