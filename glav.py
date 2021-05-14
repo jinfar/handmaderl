@@ -2,7 +2,7 @@ import os, sys
 import numpy as np
 from collections import deque 
 sys.path.append(os.getcwd())
-
+import random
 
 # -1 means block
 # 5 means agent
@@ -110,6 +110,9 @@ class BufferCreator():
     def dobav(self, state, action, reward, next_state):
         self.buf.append([state, action, reward, next_state])
 
+    def sample(self, num_samples):
+        assert num_samples <= len(self.buf), "malenkiy razmer viborki"
+        return random.sample(self.buf, num_samples)
 
 def main():
     m = Maze(5, 5)
